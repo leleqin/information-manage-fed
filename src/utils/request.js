@@ -17,7 +17,6 @@ function getBaseURL(url) {
 request.interceptors.request.use(function (config) {
   // 通过求情的 url 判断 baseUrl
   config.baseURL = getBaseURL(config.url);
-  console.log(config);
   return config;
 });
 
