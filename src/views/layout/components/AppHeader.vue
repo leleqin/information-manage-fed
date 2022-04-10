@@ -9,8 +9,8 @@
     <el-dropdown>
       <span class="el-dropdown-link">
         <el-avatar
-          size="30"
-          src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+          :size="30"
+          :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
         ></el-avatar>
         <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
