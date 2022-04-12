@@ -68,10 +68,14 @@ export default {
         const { data } = await login(this.form);
         this.dispalyLoading = false;
         if (data.state === 1) {
-          // 通过 router 跳转页面
-          this.$router.push({ name: "home" });
+          // store 存储登录信息
+          this.$store.commit("setUser", data.content);
           // Element UI 的 message 提示框
           this.$message.success("登录成功");
+          // 通过 router 跳转页面
+          // this.$router.push({ name: "home" });
+          // 跳转到登录之前的页面
+          this.$router.push(this.$route.query.redirect || "/");
         } else {
           this.$message.error("登录失败");
         }

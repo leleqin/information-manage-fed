@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import store from "@/store";
+
 // 引入 component
 // import LayoutIndex from "@/views/layout/index";
 
@@ -18,6 +20,8 @@ const routes = [
     path: "/",
     component: () =>
       import(/* webpackChunkName: "layout" */ "@/views/layout/index"),
+    // 判断是否需要经过身份验证后才能访问
+    meta: { requiresAuth: true },
     children: [
       {
         path: "",
@@ -81,6 +85,27 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  // 验证 to 路由是否需要进行身份认证
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // 通过 store 的 user 判断是否有登录信息
+    if (!store.state.user) {
+      // 未登录跳转到登录页
+      return next({
+        name: "login",
+        // 登录成功后跳转到之前想要进入的页面
+        query: {
+          // 将本次路由的 fullPath 传递给 login 页面
+          redirect: to.fullPath,
+        },
+      });
+    }
+    next();
+  } else {
+    next();
+  }
 });
 
 export default router;
