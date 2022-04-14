@@ -1,11 +1,20 @@
 <template>
   <div class="app-header">
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
-      <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-      <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-    </el-breadcrumb>
+    <div class="header-left">
+      <i
+        :class="{
+          'el-icon-s-unfold': isCollapse,
+          'el-icon-s-fold': !isCollapse,
+        }"
+        @click="handleCollapse"
+      ></i>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
+        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <el-dropdown>
       <span class="el-dropdown-link">
         <el-avatar
@@ -29,6 +38,7 @@
 import { getUserInfo } from "@/services/user/user";
 export default {
   name: "AppHeader",
+  props: ["isCollapse"],
   created() {
     this.loadUserInfo();
   },
@@ -55,6 +65,10 @@ export default {
       // 跳转到登录页
       this.$router.push({ name: "login" });
     },
+    // 折叠导航
+    handleCollapse() {
+      this.$emit("is-collapse", !this.isCollapse);
+    },
   },
 };
 </script>
@@ -65,6 +79,17 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+
+    i {
+      padding-right: 15px;
+      font-size: 20px;
+    }
+  }
 
   .el-dropdown-link {
     display: flex;

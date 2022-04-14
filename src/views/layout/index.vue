@@ -1,12 +1,15 @@
 <template>
   <el-container>
-    <el-aside width="200px">
+    <el-aside class="aside-translate" width="initial">
       <!-- 侧边栏组件 -->
-      <app-aside></app-aside>
+      <app-aside :is-collapse="isCollapse"></app-aside>
     </el-aside>
     <el-container>
       <el-header>
-        <app-header></app-header>
+        <app-header
+          :is-collapse="isCollapse"
+          @is-collapse="isCollapse = $event"
+        ></app-header>
       </el-header>
       <el-main>
         <router-view></router-view>
@@ -22,6 +25,11 @@ import AppHeader from "./components/AppHeader";
 
 export default {
   name: "LayoutIndex",
+  data() {
+    return {
+      isCollapse: false,
+    };
+  },
   components: {
     AppAside,
     AppHeader,
@@ -35,7 +43,8 @@ export default {
 }
 
 .el-aside {
-  background-color: aqua;
+  height: 100vh;
+  background-color: #545c64;
 }
 
 .el-main {

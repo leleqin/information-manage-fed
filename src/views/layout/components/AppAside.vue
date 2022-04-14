@@ -7,6 +7,7 @@
     active-text-color="#ffd04b"
     unique-opened
     router
+    :collapse="isCollapse"
   >
     <el-submenu index="1">
       <template slot="title">
@@ -54,11 +55,14 @@
 <script>
 export default {
   name: "AppAside",
+  props: ["isCollapse"],
 };
 </script>
 
 <style scoped lang="scss">
-.el-menu {
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 100%;
   height: 100%;
   border-right: 0;
 }
