@@ -41,6 +41,13 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "menu" */ "@/views/menu/index"),
       },
+      // 添加菜单
+      {
+        path: "/menu/create",
+        name: "createMenu",
+        component: () =>
+          import(/* webpackChunkName: "create-menu" */ "@/views/menu/create"),
+      },
       {
         path: "/resource",
         name: "resource",

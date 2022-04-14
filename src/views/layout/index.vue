@@ -39,6 +39,6 @@ export default {
 }
 
 .el-main {
-  background-color: cadetblue;
+  background-color: rgb(209, 238, 240);
 }
 </style>
