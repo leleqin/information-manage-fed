@@ -34,7 +34,7 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">提交</el-button>
-      <el-button>重置</el-button>
+      <el-button @click="resetData">重置</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -67,23 +67,17 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
-          saveOrUpdate(this.form)
-            .then((res) => {
-              console.log(res);
-              if (res.status === 200) {
-                this.$message({
-                  type: "success",
-                  message: "提交成功!",
-                });
-                this.$router.push({
-                  name: "menu",
-                });
-              }
-            })
-            .catch((err) => {
-              console.log(err);
+        .then(async () => {
+          const response = await saveOrUpdate(this.form);
+          if (response.status === 200) {
+            this.$message({
+              type: "success",
+              message: "提交成功!",
             });
+            this.$router.push({
+              name: "menu",
+            });
+          }
         })
         .catch(() => {
           this.$message({
@@ -98,6 +92,18 @@ export default {
       if (data.code === "000000") {
         this.parentList = data.data;
       }
+    },
+    // 重置数据
+    resetData() {
+      this.form = {
+        parentId: -1,
+        name: "",
+        href: "",
+        icon: "",
+        orderNum: 0,
+        description: "",
+        shown: true,
+      };
     },
   },
 };

@@ -19,3 +19,19 @@ export const saveOrUpdate = (data) => {
     data,
   });
 };
+
+// 获取所有菜单
+export const getAll = () => {
+  return request({
+    method: "GET",
+    url: "/boss/menu/getAll",
+  });
+};
+
+// 删除菜单
+export const deleteMenu = (id) => {
+  return request({
+    method: "DELETE",
+    url: `/boss/menu/${id}`,
+  });
+};

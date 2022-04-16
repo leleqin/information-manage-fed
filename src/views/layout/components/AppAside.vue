@@ -60,10 +60,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.el-menu {
+  height: 100%;
+  border-right: 0;
+}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 100%;
-  height: 100%;
-  border-right: 0;
 }
 </style>
