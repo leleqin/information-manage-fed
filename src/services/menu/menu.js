@@ -35,3 +35,14 @@ export const deleteMenu = (id) => {
     url: `/boss/menu/${id}`,
   });
 };
+
+// 获取单个菜单的信息
+export const getEditMenuInfo = (id = -1) => {
+  return request({
+    method: "GET",
+    url: "/boss/menu/getEditMenuInfo",
+    params: {
+      id,
+    },
+  });
+};

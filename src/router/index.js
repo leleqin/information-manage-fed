@@ -48,6 +48,13 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "create-menu" */ "@/views/menu/create"),
       },
+      // 编辑菜单
+      {
+        path: "/menu/edit",
+        name: "editMenu",
+        component: () =>
+          import(/* webpackChunkName: "edit-menu" */ "@/views/menu/edit"),
+      },
       {
         path: "/resource",
         name: "resource",

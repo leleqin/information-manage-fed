@@ -1,13 +1,14 @@
 <template>
   <div>
-    <create-or-edit></create-or-edit>
+    <create-or-edit :menu-id="this.$route.params.id"></create-or-edit>
   </div>
 </template>
 
 <script>
 import CreateOrEdit from "./components/CreateOrEdit";
+
 export default {
-  name: "CreateMenu",
+  name: "EditMenu",
   components: { CreateOrEdit },
 };
 </script>

@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     createMenu() {
-      console.log("create menu");
       this.$router.push({
         name: "createMenu",
       });
@@ -70,7 +69,12 @@ export default {
       }
     },
     handleEdit(rowData) {
-      console.log(rowData);
+      this.$router.push({
+        name: "editMenu",
+        params: {
+          id: rowData.id,
+        },
+      });
     },
     handleDelete(rowData) {
       this.$confirm("是否要删除该菜单", "提示", {

@@ -79,7 +79,6 @@ request.interceptors.response.use(
           data: qs.stringify({ refreshtoken: store.state.user.refresh_token }),
         })
           .then((res) => {
-            console.log(res);
             // 刷新 token 失败
             if (res.data.state !== 1) {
               // 清除无效的用户信息
