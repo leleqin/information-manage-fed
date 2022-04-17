@@ -25,8 +25,10 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onReset">重置</el-button>
-          <el-button type="primary" @click="onSearch">查询</el-button>
+          <el-button @click="onReset">重置</el-button>
+          <el-button type="primary" @click="onSearch" :disabled="isLoading"
+            >查询</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
@@ -37,7 +39,12 @@
     </el-card>
     <!-- 资源列表 -->
     <el-card>
-      <el-table :data="sourcesData" border style="width: 100%">
+      <el-table
+        v-loading="isLoading"
+        :data="sourcesData"
+        border
+        style="width: 100%"
+      >
         <el-table-column align="center" width="50px" prop="id" label="编号">
         </el-table-column>
         <el-table-column align="center" prop="name" label="资源名称">
@@ -70,6 +77,7 @@
     </el-card>
     <!-- 分页 -->
     <el-pagination
+      :disabled="isLoading"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="searchForm.current"
@@ -79,6 +87,7 @@
       :total="sourcesTotal"
     >
     </el-pagination>
+    <!-- 添加和编辑dialog -->
   </div>
 </template>
 
@@ -105,6 +114,7 @@ export default {
       sourcesData: [],
       sourcesSort: [],
       sourcesTotal: 0,
+      isLoading: false,
     };
   },
   methods: {
@@ -115,10 +125,12 @@ export default {
       }
     },
     async getResourceData() {
+      this.isLoading = true;
       const { data } = await getResourcePages(this.searchForm);
       if (data.code === "000000") {
         this.sourcesData = data.data.records;
         this.sourcesTotal = data.data.total;
+        this.isLoading = false;
       }
     },
     onSearch() {
