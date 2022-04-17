@@ -8,13 +8,13 @@
         :model="searchForm"
         class="demo-form-inline"
       >
-        <el-form-item label="资源名称">
+        <el-form-item label="资源名称" prop="name">
           <el-input v-model="searchForm.name" placeholder="资源名称"></el-input>
         </el-form-item>
-        <el-form-item label="资源路径">
+        <el-form-item label="资源路径" prop="url">
           <el-input v-model="searchForm.url" placeholder="资源路径"></el-input>
         </el-form-item>
-        <el-form-item label="资源分类">
+        <el-form-item label="资源分类" prop="categoryId">
           <el-select v-model="searchForm.categoryId" placeholder="全部">
             <el-option
               v-for="source in sourcesSort"
