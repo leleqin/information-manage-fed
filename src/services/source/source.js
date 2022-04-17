@@ -8,3 +8,11 @@ export const getResourcePages = (data) => {
     data,
   });
 };
+
+// 获取资源分类列表
+export const getResourceAll = () => {
+  return request({
+    method: "GET",
+    url: "/boss/resource/category/getAll",
+  });
+};

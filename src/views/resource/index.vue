@@ -2,17 +2,26 @@
   <div class="resource">
     <!-- 筛选部分 -->
     <el-card>
-      <el-form :inline="true" :model="searchFrom" class="demo-form-inline">
+      <el-form
+        ref="searchForm"
+        :inline="true"
+        :model="searchForm"
+        class="demo-form-inline"
+      >
         <el-form-item label="资源名称">
-          <el-input v-model="searchFrom.user" placeholder="资源名称"></el-input>
+          <el-input v-model="searchForm.name" placeholder="资源名称"></el-input>
         </el-form-item>
         <el-form-item label="资源路径">
-          <el-input v-model="searchFrom.user" placeholder="资源路径"></el-input>
+          <el-input v-model="searchForm.url" placeholder="资源路径"></el-input>
         </el-form-item>
         <el-form-item label="资源分类">
-          <el-select v-model="searchFrom.region" placeholder="全部">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <el-select v-model="searchForm.categoryId" placeholder="全部">
+            <el-option
+              v-for="source in sourcesSort"
+              :key="source.id"
+              :label="source.name"
+              :value="source.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -59,33 +68,66 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <!-- 分页 -->
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="searchForm.current"
+      :page-sizes="[10, 15, 20]"
+      :page-size="searchForm.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="sourcesTotal"
+    >
+    </el-pagination>
   </div>
 </template>
 
 <script>
-import { getResourcePages } from "@/services/source/source";
+import { getResourcePages, getResourceAll } from "@/services/source/source";
 
 export default {
   name: "ResourceIndex",
   created() {
     // 获取资源列表
     this.getResourceData();
+    // 获取分类列表
+    this.getResourceAll();
   },
   data() {
     return {
-      searchFrom: {},
+      searchForm: {
+        name: "",
+        url: "",
+        categoryId: "",
+        current: 1,
+        size: 10,
+      },
       sourcesData: [],
+      sourcesSort: [],
+      sourcesTotal: 0,
     };
   },
   methods: {
-    async getResourceData() {
-      const { data } = await getResourcePages({});
+    async getResourceAll() {
+      const { data } = await getResourceAll();
       if (data.code === "000000") {
-        this.sourcesData = data.data.records;
+        this.sourcesSort = data.data;
       }
     },
-    onSearch() {},
-    onReset() {},
+    async getResourceData() {
+      const { data } = await getResourcePages(this.searchForm);
+      if (data.code === "000000") {
+        this.sourcesData = data.data.records;
+        this.sourcesTotal = data.data.total;
+      }
+    },
+    onSearch() {
+      this.searchForm.current = 1;
+      this.getResourceData();
+    },
+    onReset() {
+      this.$refs.searchForm.resetFields();
+    },
     onAdd() {},
     onSort() {},
     handleEdit(rowData) {
@@ -93,6 +135,14 @@ export default {
     },
     handleDelete(rowData) {
       console.log(rowData);
+    },
+    handleCurrentChange(value) {
+      this.searchForm.current = value;
+      this.getResourceData();
+    },
+    handleSizeChange(value) {
+      this.searchForm.size = value;
+      this.getResourceData();
     },
   },
   filters: {
