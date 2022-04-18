@@ -83,7 +83,7 @@ export default {
   .header-left {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
 
     i {
       padding-right: 15px;

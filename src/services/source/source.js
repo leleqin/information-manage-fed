@@ -16,3 +16,20 @@ export const getResourceAll = () => {
     url: "/boss/resource/category/getAll",
   });
 };
+
+// 新增资源
+export const saveOrUpdateResource = (data) => {
+  return request({
+    method: "POST",
+    url: "/boss/resource/saveOrUpdate",
+    data,
+  });
+};
+
+// 删除资源
+export const deleteResource = (id) => {
+  return request({
+    method: "DELETE",
+    url: `/boss/resource/${id}`,
+  });
+};

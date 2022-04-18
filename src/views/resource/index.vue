@@ -88,14 +88,36 @@
     >
     </el-pagination>
     <!-- 添加和编辑dialog -->
+    <el-dialog
+      :title="isEdit ? '编辑资源' : '添加资源'"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleCloseDialog"
+      :destroy-on-close="true"
+    >
+      <create-or-eidt
+        @updateData="updateDialog"
+        @dialogClose="handleCloseDialog"
+        :sourcesSort="sourcesSort"
+        :editSourcesData="editSourcesData"
+      ></create-or-eidt>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getResourcePages, getResourceAll } from "@/services/source/source";
+import {
+  getResourcePages,
+  getResourceAll,
+  deleteResource,
+} from "@/services/source/source";
+import CreateOrEidt from "./components/CreateOrEdit";
 
 export default {
   name: "ResourceIndex",
+  components: {
+    CreateOrEidt,
+  },
   created() {
     // 获取资源列表
     this.getResourceData();
@@ -115,6 +137,9 @@ export default {
       sourcesSort: [],
       sourcesTotal: 0,
       isLoading: false,
+      dialogVisible: false,
+      isEdit: false,
+      editSourcesData: null,
     };
   },
   methods: {
@@ -140,13 +165,22 @@ export default {
     onReset() {
       this.$refs.searchForm.resetFields();
     },
-    onAdd() {},
+    onAdd() {
+      this.isEdit = false;
+      this.dialogVisible = true;
+    },
     onSort() {},
     handleEdit(rowData) {
-      console.log(rowData);
+      this.editSourcesData = rowData;
+      this.isEdit = true;
+      this.dialogVisible = true;
     },
-    handleDelete(rowData) {
-      console.log(rowData);
+    async handleDelete(rowData) {
+      const { data } = await deleteResource(rowData.id);
+      if (data.code === "000000") {
+        this.$message.success("删除成功");
+        this.getResourceData();
+      }
     },
     handleCurrentChange(value) {
       this.searchForm.current = value;
@@ -154,6 +188,15 @@ export default {
     },
     handleSizeChange(value) {
       this.searchForm.size = value;
+      this.getResourceData();
+    },
+    handleCloseDialog() {
+      this.dialogVisible = false;
+      this.editSourcesData = null;
+    },
+    updateDialog() {
+      this.dialogVisible = false;
+      this.editSourcesData = null;
       this.getResourceData();
     },
   },
