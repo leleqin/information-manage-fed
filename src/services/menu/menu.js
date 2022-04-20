@@ -46,3 +46,23 @@ export const getEditMenuInfo = (id = -1) => {
     },
   });
 };
+
+// 获取角色拥有的菜单
+export const getRoleMenus = (roleId) => {
+  return request({
+    method: "GET",
+    url: "/boss/menu/getRoleMenus",
+    params: {
+      roleId,
+    },
+  });
+};
+
+// 给角色分配菜单
+export const allocateRoleMenus = (data) => {
+  return request({
+    method: "POST",
+    url: "/boss/menu/allocateRoleMenus",
+    data,
+  });
+};

@@ -35,6 +35,24 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "role" */ "@/views/role/index"),
       },
+      // 给角色分配菜单
+      {
+        path: "/role/:roleId/allocMenu",
+        name: "allocMenu",
+        component: () =>
+          import(
+            /* webpackChunkName: "alloc-menu" */ "@/views/role/alloc-menu"
+          ),
+      },
+      // 给角色分配资源
+      {
+        path: "/role/:roleId/allocResource",
+        name: "allocResource",
+        component: () =>
+          import(
+            /* webpackChunkName: "alloc-resource" */ "@/views/role/alloc-resource"
+          ),
+      },
       {
         path: "/menu",
         name: "menu",

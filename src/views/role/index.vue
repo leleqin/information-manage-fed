@@ -51,10 +51,16 @@
           label="操作"
         >
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="text" size="small"
+            <el-button
+              @click="handleAllocateRoles(scope.row)"
+              type="text"
+              size="small"
               >分配菜单</el-button
             >
-            <el-button type="text" size="small" @click="handleDelete(scope.row)"
+            <el-button
+              type="text"
+              size="small"
+              @click="handleAllocateResource(scope.row)"
               >分配资源</el-button
             >
             <el-button @click="handleEdit(scope.row)" type="text" size="small"
@@ -186,6 +192,15 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
       this.roleForm = {};
+    },
+    handleAllocateRoles(rowData) {
+      this.$router.push({ name: "allocMenu", params: { roleId: rowData.id } });
+    },
+    handleAllocateResource(rowData) {
+      this.$router.push({
+        name: "allocResource",
+        params: { roleId: rowData.id },
+      });
     },
   },
   filters: {
