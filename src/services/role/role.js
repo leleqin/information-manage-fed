@@ -33,3 +33,13 @@ export const saveOrUpdateRole = (data) => {
     data,
   });
 };
+
+// 给用户分配角色
+export const allocateUserRoles = (data) => {
+  return request.post("/boss/role/allocateUserRoles", data);
+};
+
+// 查询用户角色
+export const getUserRoles = (userId) => {
+  return request.get(`/boss/role/user/${userId}`);
+};
