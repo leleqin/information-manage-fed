@@ -96,6 +96,7 @@
       :destroy-on-close="true"
     >
       <create-or-eidt
+        v-if="dialogVisible"
         @updateData="updateDialog"
         @dialogClose="handleCloseDialog"
         :sourcesSort="sourcesSort"
@@ -108,7 +109,7 @@
 <script>
 import {
   getResourcePages,
-  getResourceAll,
+  getCategoryResourceAll,
   deleteResource,
 } from "@/services/source/source";
 import CreateOrEidt from "./components/CreateOrEdit";
@@ -122,7 +123,7 @@ export default {
     // 获取资源列表
     this.getResourceData();
     // 获取分类列表
-    this.getResourceAll();
+    this.getCategoryResourceAll();
   },
   data() {
     return {
@@ -143,8 +144,8 @@ export default {
     };
   },
   methods: {
-    async getResourceAll() {
-      const { data } = await getResourceAll();
+    async getCategoryResourceAll() {
+      const { data } = await getCategoryResourceAll();
       if (data.code === "000000") {
         this.sourcesSort = data.data;
       }

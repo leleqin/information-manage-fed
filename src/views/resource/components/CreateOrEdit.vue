@@ -54,13 +54,6 @@ export default {
       this.form = this.editSourcesData;
     }
   },
-  watch: {
-    editSourcesData(val) {
-      if (val) {
-        this.form = val;
-      }
-    },
-  },
   data() {
     return {
       form: {
