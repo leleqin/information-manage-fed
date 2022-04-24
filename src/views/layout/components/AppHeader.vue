@@ -76,6 +76,7 @@ export default {
 <style scoped lang="scss">
 .app-header {
   height: 100%;
+  background-color: #f8f9fb;
   display: flex;
   align-items: center;
   justify-content: space-between;
