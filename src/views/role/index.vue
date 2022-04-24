@@ -3,19 +3,24 @@
     <!-- 筛选部分 -->
     <el-card>
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item class="sort">
+        <div style="width: 100%">
           <span>筛选搜索</span>
-          <div>
-            <el-button size="small" @click="onReset">重置</el-button>
-            <el-button
-              size="small"
-              type="primary"
-              @click="onSearch"
-              :disabled="isLoading"
-              >搜索查询查询</el-button
-            >
-          </div>
-        </el-form-item>
+          <el-button
+            size="small"
+            type="primary"
+            @click="onSearch"
+            :disabled="isLoading"
+            style="float: right"
+            >搜索查询查询</el-button
+          >
+          <el-button
+            size="small"
+            @click="onReset"
+            style="float: right; margin-right: 15px"
+            >重置</el-button
+          >
+        </div>
+        <div style="margin-top: 15px"></div>
         <el-form-item label="输入搜索：" prop="name">
           <el-input v-model="searchName" placeholder="角色名称"></el-input>
         </el-form-item>
@@ -214,14 +219,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.sort {
-  display: flex;
-  align-content: space-between;
-
-  div {
-    float: right;
-    width: 100%;
-  }
-}
-</style>
+<style scoped lang="scss"></style>
