@@ -2,8 +2,8 @@
   <div class="course">
     <!-- 查询部分 -->
     <el-form ref="searchForm" :model="searchForm" :inline="true">
-      <el-form-item label="课程名称" prop="name">
-        <el-input v-model="searchForm.name"></el-input>
+      <el-form-item label="课程名称" prop="courseName">
+        <el-input v-model="searchForm.courseName"></el-input>
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="searchForm.status" placeholder="全部">
@@ -45,6 +45,7 @@
               inactive-color="#ff4949"
               :active-value="1"
               :inactive-value="0"
+              :disabled="scope.row.statusLoading"
               @change="handelStatus(scope.row)"
             >
             </el-switch>
@@ -96,9 +97,10 @@ export default {
         courseName: "",
         status: "",
       },
+      // 查询的状态数据
       options: [
         {
-          value: -1,
+          value: "",
           label: "全部",
         },
         {
@@ -115,11 +117,24 @@ export default {
   methods: {
     // 编辑
     handelEdit(course) {
+      console.dir(this.courseData[0]);
       console.log(course);
+      this.$router.push({
+        name: "editCourse",
+        params: {
+          courseId: course.id,
+        },
+      });
     },
     async getCourses() {
       const { data } = await getQueryCourses(this.searchForm);
       if (data.code === "000000") {
+        // 给 data 添加一个 statusLoading 属性，判断是不是在发送消息中
+        // 默认值为 false
+        data.data.records.forEach((item) => {
+          // 用于表示更改的状态
+          item.statusLoading = false;
+        });
         this.coursesTotal = data.data.total;
         this.courseData = data.data.records;
       }
@@ -128,7 +143,9 @@ export default {
       this.searchForm.currentPage = 1;
       this.getCourses();
     },
-    onCreate() {},
+    onCreate() {
+      this.$router.push({ name: "createCourse" });
+    },
     handleCurrentChange(value) {
       this.searchForm.currentPage = value;
       this.getCourses();
@@ -138,12 +155,14 @@ export default {
       this.getCourses();
     },
     async handelStatus(course) {
+      course.statusLoading = true;
       const { data } = await changeStats({
         courseId: course.id,
         status: course.status,
       });
       if (data.code === "000000") {
         this.$message.success("设置成功");
+        course.statusLoading = false;
       }
     },
   },

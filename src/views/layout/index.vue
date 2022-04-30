@@ -27,7 +27,7 @@ export default {
   name: "LayoutIndex",
   data() {
     return {
-      isCollapse: false,
+      isCollapse: true,
     };
   },
   components: {

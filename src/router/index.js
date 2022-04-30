@@ -85,6 +85,22 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "course" */ "@/views/course/index"),
       },
+      // 添加课程
+      {
+        path: "/course/create",
+        name: "createCourse",
+        component: () =>
+          import(
+            /* webpackChunkName: "create-course" */ "@/views/course/create"
+          ),
+      },
+      // 编辑课程
+      {
+        path: "/course/edit/:courseId",
+        name: "editCourse",
+        component: () =>
+          import(/* webpackChunkName: "edit-course" */ "@/views/course/edit"),
+      },
       {
         path: "/user",
         name: "user",
