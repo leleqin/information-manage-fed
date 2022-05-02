@@ -14,7 +14,7 @@
       </el-steps>
       <el-divider></el-divider>
       <!-- 步骤 view -->
-      <el-form ref="courseFormData" :model="courseFormData" label-width="80px">
+      <el-form ref="courseFormData" :model="courseFormData" label-width="120px">
         <!-- 基本信息 -->
         <div class="base-info" v-show="currentActive === 0">
           <el-form-item label="名称">
@@ -77,7 +77,7 @@
           </el-form-item>
         </div>
         <!-- 上传图片 -->
-        <div class="base-info" v-show="currentActive === 1">
+        <div class="upload-image" v-show="currentActive === 1">
           <upload-course-image
             v-model="courseFormData.courseListImg"
             title="课程封面"
@@ -88,9 +88,79 @@
           ></upload-course-image>
         </div>
         <!-- 销售信息 -->
-        <div class="base-info" v-show="currentActive === 2"></div>
+        <div class="sales-info" v-show="currentActive === 2">
+          <el-form-item label="售卖价格">
+            <el-input v-model="courseFormData.discounts" type="number" min="0">
+              <template slot="append">元</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="商品原价">
+            <el-input v-model="courseFormData.price" type="number" min="0">
+              <template slot="append">元</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="销量">
+            <el-input v-model="courseFormData.sales" type="number" min="0">
+              <template slot="append">单</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="活动标签">
+            <el-input
+              v-model="courseFormData.discountsTag"
+              maxlength="4"
+              show-word-limit
+            >
+            </el-input>
+          </el-form-item>
+        </div>
         <!-- 秒杀活动 -->
-        <div class="base-info" v-show="currentActive === 3"></div>
+        <div class="seckill-info" v-show="currentActive === 3">
+          <el-form-item label="显示秒杀活动">
+            <el-switch
+              v-model="courseFormData.activityCourse"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              :active-value="true"
+              :inactive-value="false"
+            ></el-switch>
+          </el-form-item>
+          <div v-show="courseFormData.activityCourse">
+            <el-form-item label="开始时间">
+              <el-date-picker
+                v-model="courseFormData.activityCourseDTO.beginTime"
+                type="datetime"
+                placeholder="选择日期时间"
+              >
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="结束时间">
+              <el-date-picker
+                v-model="courseFormData.activityCourseDTO.endTime"
+                type="datetime"
+                placeholder="选择日期时间"
+              >
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="秒杀价">
+              <el-input
+                v-model="courseFormData.activityCourseDTO.amount"
+                type="number"
+                min="0"
+              >
+                <template slot="append">元</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="库存">
+              <el-input
+                v-model="courseFormData.activityCourseDTO.stock"
+                type="number"
+                min="0"
+              >
+                <template slot="append">个</template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </div>
         <!-- 课程详情 -->
         <div class="base-info" v-show="currentActive === 3"></div>
       </el-form>
@@ -183,11 +253,11 @@ export default {
         // 显示销量
         sales: 0,
         // 课程是否做秒杀
-        activityCourse: true,
+        activityCourse: false,
         // 秒杀信息
         activityCourseDTO: {
-          id: 0,
-          courseId: 0,
+          // id: 0,
+          // courseId: 0,
           beginTime: "",
           endTime: "",
           amount: 0,
