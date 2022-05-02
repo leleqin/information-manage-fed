@@ -162,7 +162,18 @@
           </div>
         </div>
         <!-- 课程详情 -->
-        <div class="base-info" v-show="currentActive === 3"></div>
+        <div class="base-info" v-show="currentActive === 4">
+          <text-editor v-model="courseFormData.courseDescriptionMarkDown" />
+          <el-form-item label="是否上架">
+            <el-switch
+              v-model="courseFormData.status"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              :active-value="1"
+              :inactive-value="0"
+            ></el-switch>
+          </el-form-item>
+        </div>
       </el-form>
       <!-- 下一步 -->
       <el-button
@@ -184,6 +195,8 @@
 
 <script>
 import UploadCourseImage from "./UploadCourseImage.vue";
+import TextEditor from "@/components/TextEditor";
+
 // 步骤信息
 let stepData = [
   { id: 0, stepName: "基本信息" },
@@ -195,7 +208,7 @@ let stepData = [
 
 export default {
   name: "CreateOrEdit",
-  components: { UploadCourseImage },
+  components: { UploadCourseImage, TextEditor },
   props: {
     // 页头名
     title: {
