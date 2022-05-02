@@ -9,3 +9,10 @@ export const getQueryCourses = (data) => {
 export const changeStats = (params) => {
   return request.get("/boss/course/changeState", { params });
 };
+
+// 上传图片
+export const uploadImage = (data, onUploadProgress) => {
+  return request.post("/boss/course/upload", data, {
+    onUploadProgress,
+  });
+};

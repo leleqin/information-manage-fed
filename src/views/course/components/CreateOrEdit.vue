@@ -77,7 +77,16 @@
           </el-form-item>
         </div>
         <!-- 上传图片 -->
-        <div class="base-info" v-show="currentActive === 1"></div>
+        <div class="base-info" v-show="currentActive === 1">
+          <upload-course-image
+            v-model="courseFormData.courseListImg"
+            title="课程封面"
+          ></upload-course-image>
+          <upload-course-image
+            v-model="courseFormData.courseImgUrl"
+            title="解锁封面"
+          ></upload-course-image>
+        </div>
         <!-- 销售信息 -->
         <div class="base-info" v-show="currentActive === 2"></div>
         <!-- 秒杀活动 -->
@@ -104,6 +113,7 @@
 </template>
 
 <script>
+import UploadCourseImage from "./UploadCourseImage.vue";
 // 步骤信息
 let stepData = [
   { id: 0, stepName: "基本信息" },
@@ -115,6 +125,7 @@ let stepData = [
 
 export default {
   name: "CreateOrEdit",
+  components: { UploadCourseImage },
   props: {
     // 页头名
     title: {
@@ -205,5 +216,9 @@ export default {
 <style scoped lang="scss">
 .el-page-header {
   padding-bottom: 30px;
+}
+// 鼠标换成小手的样子
+.el-step {
+  cursor: pointer;
 }
 </style>
