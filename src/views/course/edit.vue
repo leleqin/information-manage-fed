@@ -1,6 +1,9 @@
 <template>
   <div class="edit-course">
-    <create-or-edit title="编辑课程"></create-or-edit>
+    <create-or-edit
+      title="编辑课程"
+      :editCourseId="editCourseId"
+    ></create-or-edit>
   </div>
 </template>
 
@@ -10,6 +13,14 @@ export default {
   name: "EditCourse",
   components: {
     CreateOrEdit,
+  },
+  created() {
+    this.editCourseId = this.$route.params.courseId;
+  },
+  data() {
+    return {
+      editCourseId: 0,
+    };
   },
 };
 </script>

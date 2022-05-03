@@ -21,3 +21,8 @@ export const uploadImage = (data, onUploadProgress) => {
 export const saveOrUpdateCourse = (data) => {
   return request.post("/boss/course/saveOrUpdateCourse", data);
 };
+
+// 通过课程Id获取课程信息
+export const getCourseById = (params) => {
+  return request.get("/boss/course/getCourseById", { params });
+};

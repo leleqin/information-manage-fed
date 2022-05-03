@@ -194,7 +194,7 @@
 </template>
 
 <script>
-import { saveOrUpdateCourse } from "@/services/course/course";
+import { saveOrUpdateCourse, getCourseById } from "@/services/course/course";
 
 import UploadCourseImage from "./UploadCourseImage.vue";
 import TextEditor from "@/components/TextEditor";
@@ -217,6 +217,16 @@ export default {
       type: String,
       default: "",
     },
+    editCourseId: {
+      type: Number,
+      default: -1,
+    },
+  },
+  created() {
+    // 获取编辑的课程信息
+    if (this.editCourseId != -1) {
+      this.getCourseInfo();
+    }
   },
   data() {
     return {
@@ -283,6 +293,16 @@ export default {
     };
   },
   methods: {
+    // 获取编辑的课程信息
+    async getCourseInfo() {
+      const { data } = await getCourseById({ courseId: this.editCourseId });
+      if (data.code === "000000") {
+        this.courseFormData = data.data;
+        if (!this.courseFormData.activityCourseDTO) {
+          this.courseFormData.activityCourseDTO = {};
+        }
+      }
+    },
     goBack() {
       this.$router.push({ name: "course" });
     },
@@ -298,7 +318,7 @@ export default {
     },
     // 点击步骤条修改当前步骤
     changeStep(active) {
-      if (active > this.currentActive) {
+      if (active > this.currentActive && this.currentActive === -1) {
         this.$message("点击下一步，到达");
         return;
       }

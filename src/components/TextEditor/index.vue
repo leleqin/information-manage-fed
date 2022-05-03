@@ -46,6 +46,7 @@ export default {
     return {
       editor: null,
       toolbarConfig: {},
+      loading: false,
       editorConfig: {
         MENU_CONF: {
           uploadImage: {
@@ -75,6 +76,16 @@ export default {
     },
     onCreated(editor) {
       this.editor = Object.seal(editor); // 一定要用 Object.seal() ，否则会报错
+    },
+  },
+  // 由于传入的值，是异步获取的，但是组件里是同步的
+  // 需要监听 value 的变化，来初始化 Editor 的文本
+  watch: {
+    value() {
+      if (!this.loading) {
+        this.textContent = this.value;
+        this.loading = true;
+      }
     },
   },
 };

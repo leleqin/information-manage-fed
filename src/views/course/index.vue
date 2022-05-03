@@ -117,8 +117,6 @@ export default {
   methods: {
     // 编辑
     handelEdit(course) {
-      console.dir(this.courseData[0]);
-      console.log(course);
       this.$router.push({
         name: "editCourse",
         params: {
