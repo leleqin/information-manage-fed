@@ -16,3 +16,8 @@ export const uploadImage = (data, onUploadProgress) => {
     onUploadProgress,
   });
 };
+
+// 保存或更新课程信息
+export const saveOrUpdateCourse = (data) => {
+  return request.post("/boss/course/saveOrUpdateCourse", data);
+};

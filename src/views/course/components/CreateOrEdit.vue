@@ -194,6 +194,8 @@
 </template>
 
 <script>
+import { saveOrUpdateCourse } from "@/services/course/course";
+
 import UploadCourseImage from "./UploadCourseImage.vue";
 import TextEditor from "@/components/TextEditor";
 
@@ -281,15 +283,25 @@ export default {
     };
   },
   methods: {
-    goBack() {},
-    onSave() {
-      this.currentActive = 0;
+    goBack() {
+      this.$router.push({ name: "course" });
+    },
+    async onSave() {
+      const { data } = await saveOrUpdateCourse(this.courseFormData);
+      if (data.code === "000000") {
+        this.$message.success("课程新建成功");
+        this.$router.push({ name: "course" });
+      }
     },
     onNext() {
       this.currentActive++;
     },
     // 点击步骤条修改当前步骤
     changeStep(active) {
+      if (active > this.currentActive) {
+        this.$message("点击下一步，到达");
+        return;
+      }
       this.currentActive = active;
     },
   },
