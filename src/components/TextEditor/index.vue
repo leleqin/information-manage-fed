@@ -1,6 +1,6 @@
 <template>
   <div class="text-editor">
-    <div style="border: 1px solid #ccc">
+    <div style="border: 1px solid #ccc; height: 600px">
       <Toolbar
         style="border-bottom: 1px solid #ccc"
         :editor="editor"
@@ -8,9 +8,10 @@
         mode="simple"
       />
       <Editor
-        style="height: 500px; overflow-y: hidden"
+        style="height: 300px; overflow-y: hidden"
         v-model="textContent"
         mode="simple"
+        :defaultConfig="editorConfig"
         @onCreated="onCreated"
         @onChange="onChange"
       />
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import { uploadImage } from "@/services/course/course";
 // 富文本编辑器
 import "@wangeditor/editor/dist/css/style.css";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
@@ -44,6 +46,26 @@ export default {
     return {
       editor: null,
       toolbarConfig: {},
+      editorConfig: {
+        MENU_CONF: {
+          uploadImage: {
+            server: "http://eduboss.lagou.com/boss/course/upload",
+            async customUpload(file, insertFn) {
+              // file 即选中的文件
+              const fd = new FormData();
+              fd.append("file", file);
+              // 自己实现上传，并得到图片 url alt href
+              const { data } = await uploadImage(fd, (event) => {
+                console.log(event);
+              });
+              // 最后插入图片
+              if (data.code === "000000") {
+                insertFn(data.data.name, data.data.name, data.data.name);
+              }
+            },
+          },
+        },
+      },
       textContent: "",
     };
   },
