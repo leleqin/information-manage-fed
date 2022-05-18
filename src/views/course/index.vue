@@ -56,8 +56,8 @@
             <el-button size="mini" @click="handelEdit(scope.row)"
               >编辑</el-button
             >
-            <el-button size="mini" @click="allocRole(scope.row)"
-              >课程管理</el-button
+            <el-button size="mini" @click="handelManagerCourse(scope.row)"
+              >内容管理</el-button
             >
           </template>
         </el-table-column>
@@ -115,6 +115,16 @@ export default {
     };
   },
   methods: {
+    // 课程内容管理
+    handelManagerCourse(courseData) {
+      console.log(courseData);
+      this.$router.push({
+        name: "managerCourse",
+        params: {
+          courseId: courseData.id,
+        },
+      });
+    },
     // 编辑
     handelEdit(course) {
       this.$router.push({
@@ -124,6 +134,7 @@ export default {
         },
       });
     },
+    // 获取课程列表
     async getCourses() {
       const { data } = await getQueryCourses(this.searchForm);
       if (data.code === "000000") {
@@ -137,21 +148,26 @@ export default {
         this.courseData = data.data.records;
       }
     },
+    // 条件搜索课程
     onSearch() {
       this.searchForm.currentPage = 1;
       this.getCourses();
     },
+    // 创建课程
     onCreate() {
       this.$router.push({ name: "createCourse" });
     },
+    // 分页跳转
     handleCurrentChange(value) {
       this.searchForm.currentPage = value;
       this.getCourses();
     },
+    // 每页显示的课程数量
     handleSizeChange(value) {
       this.searchForm.pageSize = value;
       this.getCourses();
     },
+    // 课程上下架状态
     async handelStatus(course) {
       course.statusLoading = true;
       const { data } = await changeStats({

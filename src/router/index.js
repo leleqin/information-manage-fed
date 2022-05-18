@@ -101,6 +101,15 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "edit-course" */ "@/views/course/edit"),
       },
+      // 课程内容管理
+      {
+        path: "/course/manager/:courseId",
+        name: "managerCourse",
+        component: () =>
+          import(
+            /* webpackChunkName: "manager-course" */ "@/views/course/manager"
+          ),
+      },
       {
         path: "/user",
         name: "user",
