@@ -95,13 +95,13 @@
       :before-close="handleCloseDialog"
       :destroy-on-close="true"
     >
-      <create-or-eidt
+      <create-or-edit
         v-if="dialogVisible"
         @updateData="updateDialog"
         @dialogClose="handleCloseDialog"
         :sourcesSort="sourcesSort"
         :editSourcesData="editSourcesData"
-      ></create-or-eidt>
+      ></create-or-edit>
     </el-dialog>
   </div>
 </template>
@@ -112,12 +112,12 @@ import {
   getCategoryResourceAll,
   deleteResource,
 } from "@/services/source/source";
-import CreateOrEidt from "./components/CreateOrEdit";
+import CreateOrEdit from "./components/CreateOrEdit";
 
 export default {
   name: "ResourceIndex",
   components: {
-    CreateOrEidt,
+    CreateOrEdit,
   },
   created() {
     // 获取资源列表

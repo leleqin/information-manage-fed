@@ -6,3 +6,8 @@ export const getSectionAndLesson = (params) => {
     params,
   });
 };
+
+// 保存或更新章节
+export const saveOrUpdateSection = (data) => {
+  return request.post("/boss/course/section/saveOrUpdateSection", data);
+};

@@ -1,6 +1,16 @@
 <template>
   <div class="manager-course">
-    <el-page-header @back="goBack" :content="courseName"> </el-page-header>
+    <div class="header">
+      <el-page-header @back="goBack" :content="courseName"> </el-page-header>
+      <el-button
+        class="add-section"
+        type="primary"
+        icon="el-icon-plus"
+        @click="addSection"
+      >
+        添加阶段
+      </el-button>
+    </div>
     <el-card>
       <!-- element UI Tree 树形控件 -->
       <el-tree
@@ -9,16 +19,53 @@
         draggable
         :allow-drop="handelDrop"
         @node-drop="handelNodeDrop"
-      ></el-tree>
+      >
+        <div class="custom-tree-node" slot-scope="{ node, data }">
+          <span>{{ node.label }}</span>
+          <span>
+            <el-button size="small" @click="handelEditSection(data)">
+              编辑
+            </el-button>
+            <el-button type="primary" size="small" @click="() => append(data)">
+              添加课时</el-button
+            >
+            <el-button size="small" @click="() => remove(node, data)">
+              已隐藏
+            </el-button>
+          </span>
+        </div>
+      </el-tree>
     </el-card>
+    <!-- 添加和编辑section dialog -->
+    <el-dialog
+      title="章节信息"
+      :visible.sync="sectionDialogVisible"
+      width="50%"
+      :before-close="handleCloseSectionDialog"
+      :destroy-on-close="true"
+    >
+      <create-or-edit-section
+        v-if="sectionDialogVisible"
+        @dialogClose="handleCloseSectionDialog"
+        :sectionData="sectionData"
+        :courseName="courseName"
+        :courseId="courseId"
+      ></create-or-edit-section>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getSectionAndLesson } from "@/services/course/sections";
 import { getCourseById } from "@/services/course/course";
+
+import CreateOrEditSection from "./components/CreateOrEditSection.vue";
+
 export default {
   name: "ManagerCourse",
+  components: {
+    CreateOrEditSection,
+  },
   created() {
     // 获取课程 section
     this.getSections();
@@ -27,8 +74,14 @@ export default {
   },
   data() {
     return {
+      // 是否显示添加/编辑 section dialog
+      sectionDialogVisible: false,
+      // 单个章节信息
+      sectionData: null,
       // 课程名
       courseName: "",
+      // 课程id
+      courseId: 0,
       // Sections
       sectionsData: [],
       // 控件渲染配置
@@ -42,8 +95,24 @@ export default {
     };
   },
   methods: {
+    // 关闭添加/编辑 section dialog
+    handleCloseSectionDialog() {
+      this.sectionDialogVisible = false;
+      this.sectionData = null;
+      this.getSections();
+    },
+    // 添加章节
+    addSection() {
+      this.sectionDialogVisible = true;
+    },
+    // 编辑章节
+    handelEditSection(rowData) {
+      this.sectionDialogVisible = true;
+      this.sectionData = rowData;
+    },
     // 拖拽排序完成后的处理函数
     handelNodeDrop(draggingNode, dropNode, type, event) {
+      // 需要根据拖动的顺序, 来发送请求,对章节和课时进行排序
       console.log(draggingNode);
       console.log(dropNode);
       console.log(type);
@@ -60,8 +129,9 @@ export default {
     },
     // 获取课程 section
     async getSections() {
+      this.courseId = this.$route.params.courseId;
       const { data } = await getSectionAndLesson({
-        courseId: this.$route.params.courseId,
+        courseId: this.courseId,
       });
       if (data.code === "000000") {
         this.sectionsData = data.data;
@@ -71,7 +141,7 @@ export default {
     // 获取课程 info
     async getCourse() {
       const { data } = await getCourseById({
-        courseId: this.$route.params.courseId,
+        courseId: this.courseId,
       });
       if (data.code === "000000") {
         this.courseName = data.data.courseName;
@@ -87,7 +157,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.el-page-header {
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+::v-deep .el-tree-node__content {
+  height: auto;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   padding-bottom: 30px;
 }
 </style>
